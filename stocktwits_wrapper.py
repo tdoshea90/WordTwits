@@ -7,10 +7,14 @@ import time
 from flask import abort, session
 import requests
 from stop_words import get_stop_words
+from lib.mysql_wrapper import MysqlWrapper
 
 
 class StockTwitsWrapper:
     """ ST api wrapper. not all endpoints require auth token. """
+
+    def __init__(self):
+        self.mysql_conn = MysqlWrapper()
 
     bot_blacklist = [727510]
 
