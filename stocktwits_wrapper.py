@@ -7,14 +7,14 @@ import time
 from flask import abort, session
 import requests
 from stop_words import get_stop_words
+
 from lib.mysql_wrapper import MysqlWrapper
 
 
 class StockTwitsWrapper:
     """ ST api wrapper. not all endpoints require auth token. """
 
-    def __init__(self):
-        self.mysql_conn = MysqlWrapper()
+    mysql_conn = MysqlWrapper.get_connection()
 
     bot_blacklist = [727510]
 
@@ -93,7 +93,7 @@ class StockTwitsWrapper:
 
         word_map = self.__build_word_map(simple_messages)
 
-        #self.__update_db('AMZN', 'derp', 10)
+        self.__update_db('AMZN', 'derp', 10)
 
         # TODO: send to DB and update, return results from DB and st_compliant_posts.
 
@@ -198,7 +198,7 @@ class StockTwitsWrapper:
 
         cursor = self.mysql_conn.cursor()
         cursor.execute(query)
-        for (ticker, word, frequency) in self.cursor:
+        for (ticker, word, frequency) in cursor:
             print('%s\t%s\t%s' % (ticker, word, frequency))
 
 
