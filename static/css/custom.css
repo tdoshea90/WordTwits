@@ -1,0 +1,16 @@
+.ellipses-style {
+    display: inline-block;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+    width:200px;
+    vertical-align:bottom;
+}
+
+#fontSizeTest {
+    position: absolute;
+    visibility: hidden;
+    height: auto;
+    width: auto;
+    white-space: nowrap;
+}
