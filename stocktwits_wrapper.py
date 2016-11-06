@@ -54,11 +54,13 @@ class StockTwitsWrapper:
 
         get_ticker_url = 'https://api.stocktwits.com/api/2/streams/symbol/'
         url_postfix = '.json'
+        if 'access_token' in session:
+            url_postfix = '%s?access_token=%s' % (url_postfix, session['access_token'])
 
         # call ST api
         request_url = get_ticker_url + ticker + url_postfix
 
-        # TODO: every hour use ST 'cursor' parameter to only get newest messages
+        # TODO: use 'cursor' parameter to only get newest messages
 
         response = requests.get(request_url)
         response_json = response.json()
@@ -68,9 +70,6 @@ class StockTwitsWrapper:
         rate_reset = response.headers.get('X-RateLimit-Reset')
         session['rate_remaining'] = rate_remaining
         session['rate_reset'] = rate_reset  # returned in true UTC time
-
-#         print(session['rate_remaining'])
-#         print(session['rate_reset'])
 
         self.__check_response_code(response_json, rate_remaining)
 

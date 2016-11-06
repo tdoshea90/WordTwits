@@ -9,8 +9,6 @@ class AuthWrapper:
 
     client_id = '7cc80ecf361d0f13'
     auth_redirect_postfix = 'auth_redirect_uri/'
-    # uncomment along with other 2 lines for local oauth testing
-    #bs_auth_redirect_url = 'https://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/'
 
     @classmethod
     def get_auth_code_url(self, auth_redirect_root):
@@ -19,7 +17,6 @@ class AuthWrapper:
         auth_code_params = dict(
             response_type='code',
             redirect_uri=auth_redirect_root + self.auth_redirect_postfix,
-            #redirect_uri=self.bs_auth_redirect_url + self.auth_redirect_postfix,
             client_id=self.client_id,
             scope='read'
         )
@@ -35,7 +32,6 @@ class AuthWrapper:
         auth_token_params = dict(
             code=auth_code,
             redirect_uri=auth_redirect_root,
-            #redirect_uri=self.bs_auth_redirect_url + self.auth_redirect_postfix,
             client_id=self.client_id,
             client_secret=os.environ.get('ST_API_KEY'),
             grant_type='authorization_code'
