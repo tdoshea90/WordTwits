@@ -10,8 +10,9 @@ from stocktwits_wrapper import StockTwitsWrapper
 
 application = Flask(__name__)
 app = application
-app.secret_key = os.environ.get('APP_SECRET_KEY')
-# app.permanent_session_lifetime = timedelta(days=1)
+#app.secret_key = os.environ.get('APP_SECRET_KEY')
+app.secret_key = os.urandom(32)
+#app.permanent_session_lifetime = timedelta(days=1)
 
 stwrapper = StockTwitsWrapper()
 stwrapper.compile_regex_patterns()
@@ -58,11 +59,11 @@ def auth_redirect_uri():
     return redirect(request.url_root)   # go back home after successful auth
 
 
-# Not using any ST endpoints that require auth yet
+# Not actually using any ST endpoints that require auth yet
 @app.before_request
 def check_session():
-    # session.permanent = True
-    # need to comment out this block AND push to prod to develop oauth locally
+    #session.permanent = True
+    # need to comment out this block and push to prod to use oauth on localhost
     if '/auth_redirect_uri/' != request.path:
         if 'user_id' not in session or 'access_token' not in session:
             auth_code_url = authwrapper.get_auth_code_url(request.url_root)
