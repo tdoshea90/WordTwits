@@ -94,7 +94,8 @@ class StockTwitsWrapper:
 
         word_map = self.__build_word_map(simple_messages)
 
-        self.__update_db('AMZN', 'derp', 10)
+        # TODO: find the right place for this
+        # self.__update_db('AMZN', 'DERP', 10)
 
         # TODO: send to DB and update, return results from DB and st_compliant_posts.
 
@@ -193,6 +194,13 @@ class StockTwitsWrapper:
 
     @classmethod
     def __update_db(self, ticker, word, count):
+        with closing(self.mysql_conn.cursor()) as cursor:
+            # ticker, word, count
+            cursor.callproc('update_word_frequencies', (ticker, word, count))
+            self.mysql_conn.commit()
+
+    @classmethod
+    def __query_db(self):
         query = 'SELECT tickers.ticker, word_frequencies.word, word_frequencies.frequency \
                  FROM word_frequencies \
                  INNER JOIN tickers ON word_frequencies.ticker_id = tickers.id;'
