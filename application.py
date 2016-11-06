@@ -1,4 +1,5 @@
 
+import logging
 import os
 
 from flask import Flask, render_template, request, redirect, url_for, session
@@ -43,26 +44,31 @@ def about():
 @app.route('/auth_redirect_uri/')
 def auth_redirect_uri():
     exchange_code = request.args.get('code')
+
     token_response = authwrapper.get_auth_token(exchange_code, request.url_root)
 
     session['access_token'] = token_response.access_token
     session['user_id'] = token_response.user_id
     session['username'] = token_response.username
 
+    logging.info('>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    logging.error(token_response.access_token)
+    logging.warn('>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+
     return redirect(request.url_root)   # go back home after successful auth
 
 
 # Not using any ST endpoints that require auth yet
-# @app.before_request
-# def check_session():
-#     session.permanent = True
-    # comment out this block to develop locally
-#     if '/auth_redirect_uri/' != request.path:
-#         if 'user_id' not in session or 'access_token' not in session:
-#             auth_code_url = authwrapper.get_auth_code_url(request.url_root)
-#             return redirect(auth_code_url)
-#
-#     return None
+@app.before_request
+def check_session():
+    # session.permanent = True
+    # need to comment out this block AND push to prod to develop oauth locally
+    if '/auth_redirect_uri/' != request.path:
+        if 'user_id' not in session or 'access_token' not in session:
+            auth_code_url = authwrapper.get_auth_code_url(request.url_root)
+            return redirect(auth_code_url)
+
+    return None
 
 
 @app.errorhandler(404)
@@ -76,5 +82,5 @@ def rate_limit_reached(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # app.run()
+    # app.run(debug=True)
+    app.run()
