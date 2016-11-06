@@ -1,4 +1,4 @@
-import logging
+
 import os
 
 from flask import Flask, render_template, request, redirect, url_for, session
@@ -19,15 +19,6 @@ authwrapper = AuthWrapper()
 
 @app.route('/')
 def home():
-    #     query = 'SELECT tickers.ticker, word_frequencies.word, word_frequencies.frequency \
-    #              FROM word_frequencies \
-    #              INNER JOIN tickers ON word_frequencies.ticker_id = tickers.id;'
-    #
-    #     cursor.execute(query)
-    #     for (ticker, word, frequency) in cursor:
-    #         logging.error('%s\t%s\t%s' % (ticker, word, frequency))
-    #         print('%s\t%s\t%s' % (ticker, word, frequency))
-
     return render_template('home.html', title='WordTwits')
 
 
@@ -85,5 +76,5 @@ def rate_limit_reached(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # app.run()
+    # app.run(debug=True)
+    app.run()

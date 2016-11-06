@@ -1,3 +1,4 @@
+from contextlib import closing
 from datetime import datetime
 import html
 import logging
@@ -196,10 +197,10 @@ class StockTwitsWrapper:
                  FROM word_frequencies \
                  INNER JOIN tickers ON word_frequencies.ticker_id = tickers.id;'
 
-        cursor = self.mysql_conn.cursor()
-        cursor.execute(query)
-        for (ticker, word, frequency) in cursor:
-            print('%s\t%s\t%s' % (ticker, word, frequency))
+        with closing(self.mysql_conn.cursor()) as cursor:
+            cursor.execute(query)
+            for (ticker, word, frequency) in cursor:
+                print('%s\t%s\t%s' % (ticker, word, frequency))
 
 
 class GetTickerResponse:
