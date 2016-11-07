@@ -115,7 +115,7 @@ class StockTwitsWrapper:
         word_map = self.__build_word_map(simple_messages)
 
         # TODO: find the right place for this
-        # self.__update_word_frequencies('AMZN', 'DERP', 10)
+        self.__update_word_frequencies(ticker, 'DERP', 2)
 
         # TODO: send to DB and update, return results from DB and st_compliant_posts.
 
