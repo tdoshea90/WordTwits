@@ -51,15 +51,16 @@ def auth_redirect_uri():
     return redirect(request.url_root)   # go back home after successful auth
 
 
-# Using auth token boosts request limit to 400
-@app.before_request
-def check_session():
-    if '/auth_redirect_uri/' != request.path:
-        if 'user_id' not in session or 'access_token' not in session:
-            auth_code_url = authwrapper.get_auth_code_url(request.url_root)
-            return redirect(auth_code_url)
-
-    return None
+# i've hardcoded my token for all automated requests. comment this out while developing on localhost.
+# TODO: break this out for visitors to the site and automated requests
+# @app.before_request
+# def check_session():
+#     if '/auth_redirect_uri/' != request.path:
+#         if 'user_id' not in session or 'access_token' not in session:
+#             auth_code_url = authwrapper.get_auth_code_url(request.url_root)
+#             return redirect(auth_code_url)
+#
+#     return None
 
 
 @app.errorhandler(404)

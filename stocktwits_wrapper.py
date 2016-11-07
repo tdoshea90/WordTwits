@@ -2,6 +2,7 @@ from contextlib import closing
 from datetime import datetime
 import html
 import logging
+import os
 import re
 import time
 
@@ -16,6 +17,8 @@ class StockTwitsWrapper:
     """ ST api wrapper. not all endpoints require auth token. """
 
     mysql_conn = MysqlWrapper.get_connection()
+
+    oauth_token = os.environ.get('ST_OAUTH_TOKEN')
 
     bot_blacklist = [727510]
 
@@ -55,9 +58,13 @@ class StockTwitsWrapper:
         get_ticker_url = 'https://api.stocktwits.com/api/2/streams/symbol/'
         url_postfix = '.json?'
         pagination_since = self.__get_last_message(ticker)
+        # TODO: use visitors token for watchlist, etc.
         # only time we don't have access_token is on localhost so kind of an unnecessary check
-        if 'access_token' in session:
-            url_postfix = '%s&access_token=%s' % (url_postfix, session['access_token'])
+        # if 'access_token' in session:
+        # url_postfix = '%s&access_token=%s' % (url_postfix, session['access_token'])
+
+        # use my token for all automated calls
+        url_postfix = '%s&access_token=%s' % (url_postfix, self.oauth_token)
 
         # TODO: only messages 'since' show up.
         # TODO: store last 30 messages in DB or always fetch last 30 and do fake pagination here?
