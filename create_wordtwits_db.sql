@@ -30,11 +30,12 @@ CREATE TABLE `tickers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sector` varchar(64) DEFAULT NULL,
   `industry` varchar(64) DEFAULT NULL,
+  `last_message` int(11) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ticker_UNIQUE` (`ticker`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `company_name_UNIQUE` (`company_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=13258 DEFAULT CHARSET=latin1 COMMENT='Dimension table for tickers';
+) ENGINE=InnoDB AUTO_INCREMENT=13275 DEFAULT CHARSET=latin1 COMMENT='Table for all tickers';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,12 +55,55 @@ CREATE TABLE `word_frequencies` (
   UNIQUE KEY `uq_ticker_idx` (`ticker_id`,`word`),
   KEY `fk_ticker_id_idx` (`ticker_id`),
   CONSTRAINT `fk_ticker_id` FOREIGN KEY (`ticker_id`) REFERENCES `tickers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COMMENT='Word Frequency fact table';
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1 COMMENT='Word Frequency fact table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping routines for database 'WordTwitsDatabase'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `get_last_message` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`tdoshea90`@`%` PROCEDURE `get_last_message`(IN ticker_arg CHAR(5), OUT last_message_out INT)
+BEGIN
+
+	SET last_message_out = (SELECT IFNULL((SELECT last_message FROM tickers WHERE ticker=ticker_arg), -1));
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `update_last_message` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`tdoshea90`@`%` PROCEDURE `update_last_message`(IN ticker_arg CHAR(5), IN last_message_arg INT)
+BEGIN
+
+	UPDATE tickers SET last_message=last_message_arg
+	WHERE ticker=ticker_arg;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `update_word_frequencies` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -70,7 +114,7 @@ CREATE TABLE `word_frequencies` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE `update_word_frequencies`(ticker_arg CHAR(5), word_arg VARCHAR(32), count_arg INT)
+CREATE DEFINER=`tdoshea90`@`%` PROCEDURE `update_word_frequencies`(IN ticker_arg CHAR(5), IN word_arg VARCHAR(32), IN count_arg INT)
 BEGIN
 
 	# 1. Get ticker or insert
@@ -97,4 +141,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-06 12:57:07
+-- Dump completed

@@ -53,14 +53,20 @@ class StockTwitsWrapper:
         self.__check_rate_reset()
 
         get_ticker_url = 'https://api.stocktwits.com/api/2/streams/symbol/'
-        url_postfix = '.json'
+        url_postfix = '.json?'
+        pagination_since = self.__get_last_message(ticker)
+        # only time we don't have access_token is on localhost so kind of an unnecessary check
         if 'access_token' in session:
-            url_postfix = '%s?access_token=%s' % (url_postfix, session['access_token'])
+            url_postfix = '%s&access_token=%s' % (url_postfix, session['access_token'])
+
+        # TODO: only messages 'since' show up.
+        # TODO: store last 30 messages in DB or always fetch last 30 and do fake pagination here?
+        # TODO: or use one of the embedded widget things
+        if pagination_since != -1:
+            url_postfix = '%s&since=%s' % (url_postfix, str(pagination_since))
 
         # call ST api
-        request_url = get_ticker_url + ticker + url_postfix
-
-        # TODO: use 'cursor' parameter to only get newest messages
+        request_url = '%s%s%s' % (get_ticker_url, ticker, url_postfix)
 
         response = requests.get(request_url)
         response_json = response.json()
@@ -78,7 +84,15 @@ class StockTwitsWrapper:
 
         st_compliant_posts = []
         simple_messages = []
+        # index = 1
         for message in response_json['messages']:
+
+            # TODO: first message is new 'last_message' to use for pagination
+            # TODO: turn this on once automation is set up
+            # self.__update_last_message(ticker, message['id'])
+
+            #             print('%d:%s:%s' % (index, message['id'], message['body']))
+            #             index = index + 1
 
             # 1. https://stocktwits.com/developers/docs/display_requirement
             st_compliant_posts.append(self.__build_st_compliant_post(message))
@@ -94,7 +108,7 @@ class StockTwitsWrapper:
         word_map = self.__build_word_map(simple_messages)
 
         # TODO: find the right place for this
-        # self.__update_db('AMZN', 'DERP', 10)
+        # self.__update_word_frequencies('AMZN', 'DERP', 10)
 
         # TODO: send to DB and update, return results from DB and st_compliant_posts.
 
@@ -192,22 +206,25 @@ class StockTwitsWrapper:
             abort(response_code)
 
     @classmethod
-    def __update_db(self, ticker, word, count):
+    def __update_word_frequencies(self, ticker, word, count):
         with closing(self.mysql_conn.cursor()) as cursor:
             # ticker, word, count
             cursor.callproc('update_word_frequencies', (ticker, word, count))
             self.mysql_conn.commit()
 
     @classmethod
-    def __query_db(self):
-        query = 'SELECT tickers.ticker, word_frequencies.word, word_frequencies.frequency \
-                 FROM word_frequencies \
-                 INNER JOIN tickers ON word_frequencies.ticker_id = tickers.id;'
-
+    def __get_last_message(self, ticker):
         with closing(self.mysql_conn.cursor()) as cursor:
-            cursor.execute(query)
-            for (ticker, word, frequency) in cursor:
-                print('%s\t%s\t%s' % (ticker, word, frequency))
+            # ticker, last_message return value
+            result_args = cursor.callproc('get_last_message', (ticker, 0))
+            return result_args[1]
+
+    @classmethod
+    def __update_last_message(self, ticker, last_message):
+        with closing(self.mysql_conn.cursor()) as cursor:
+            # ticker, last_message
+            cursor.callproc('update_last_message', (ticker, last_message))
+            self.mysql_conn.commit()
 
 
 class GetTickerResponse:
