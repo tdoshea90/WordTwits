@@ -1,0 +1,102 @@
+{
+  "objects": [
+    {
+      "databaseName": "WordTwitsDatabase",
+      "*password": "<password>",
+      "name": "wordtwitsdb",
+      "id": "DatabaseId_wNwEn",
+      "type": "RdsDatabase",
+      "rdsInstanceId": "wordtwitsdb",
+      "username": "stocktwits_sys"
+    },
+    {
+      "role": "DataPipelineDefaultRole",
+      "imageId": "ami-5c2f8f3c",
+      "instanceType": "t2.micro",
+      "type": "Ec2Resource",
+      "terminateAfter": "2 Minutes",
+      "runAsUser": "ec2-user",
+      "schedule": {
+        "ref": "ScheduleId_tAdi8"
+      },
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "instanceCount": "1",
+      "maxActiveInstances": "1",
+      "name": "resource_2",
+      "keyPair": "sheatimKeyPair2",
+      "id": "ResourceId_tNRJv"
+    },
+    {
+      "role": "DataPipelineDefaultRole",
+      "imageId": "ami-5c2f8f3c",
+      "instanceType": "t2.micro",
+      "type": "Ec2Resource",
+      "terminateAfter": "20 Minutes",
+      "runAsUser": "ec2-user",
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "instanceCount": "1",
+      "maxActiveInstances": "1",
+      "name": "resource_1",
+      "keyPair": "sheatimKeyPair2",
+      "id": "ResourceId_USwIy"
+    },
+    {
+      "period": "1 hours",
+      "name": "every_1_hour",
+      "id": "DefaultSchedule",
+      "type": "Schedule",
+      "startAt": "FIRST_ACTIVATION_DATE_TIME"
+    },
+    {
+      "schedule": {
+        "ref": "ScheduleId_tAdi8"
+      },
+      "database": {
+        "ref": "DatabaseId_wNwEn"
+      },
+      "scriptUri": "s3://wordtwits/truncate_daily.sql",
+      "name": "truncate_daily",
+      "id": "SqlActivityId_zVihr",
+      "runsOn": {
+        "ref": "ResourceId_tNRJv"
+      },
+      "type": "SqlActivity"
+    },
+    {
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "scriptUri": "s3://wordtwits/curl_tickers.sh",
+      "maxActiveInstances": "1",
+      "name": "curl_tickers",
+      "id": "ShellCommandActivityId_mNVG7",
+      "runsOn": {
+        "ref": "ResourceId_USwIy"
+      },
+      "type": "ShellCommandActivity"
+    },
+    {
+      "failureAndRerunMode": "CASCADE",
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "role": "DataPipelineDefaultRole",
+      "pipelineLogUri": "s3://wordtwits-dplogs/datapipeline_logs",
+      "scheduleType": "cron",
+      "name": "Default",
+      "id": "Default"
+    },
+    {
+      "period": "1 Day",
+      "startDateTime": "2016-11-08T05:00:00",
+      "name": "every_1_day",
+      "id": "ScheduleId_tAdi8",
+      "type": "Schedule"
+    }
+  ],
+  "parameters": []
+}

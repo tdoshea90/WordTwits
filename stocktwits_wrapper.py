@@ -58,17 +58,17 @@ class StockTwitsWrapper:
         get_ticker_url = 'https://api.stocktwits.com/api/2/streams/symbol/'
         url_postfix = '.json?'
         pagination_since = self.__get_last_message(ticker)
+
         # TODO: use visitors token for watchlist, etc.
         # only time we don't have access_token is on localhost so kind of an unnecessary check
         # if 'access_token' in session:
         # url_postfix = '%s&access_token=%s' % (url_postfix, session['access_token'])
 
+        # TODO: make a system account on ST
         # use my token for all automated calls
         url_postfix = '%s&access_token=%s' % (url_postfix, self.oauth_token)
 
-        # TODO: only messages 'since' show up.
-        # TODO: store last 30 messages in DB or always fetch last 30 and do fake pagination here?
-        # TODO: or use one of the embedded widget things
+        # TODO: only messages 'since' show up, use visitors token and get last 30 messages.
         if pagination_since != -1:
             url_postfix = '%s&since=%s' % (url_postfix, str(pagination_since))
 
@@ -91,15 +91,13 @@ class StockTwitsWrapper:
 
         st_compliant_posts = []
         simple_messages = []
-        # index = 1
+
+        # first message is the most recent
+        if(len(response_json['messages']) > 0):
+            last_message = response_json['messages'][0]['id']
+            self.__update_last_message(ticker, last_message)
+
         for message in response_json['messages']:
-
-            # TODO: first message is new 'last_message' to use for pagination
-            # TODO: turn this on once automation is set up
-            # self.__update_last_message(ticker, message['id'])
-
-            #             print('%d:%s:%s' % (index, message['id'], message['body']))
-            #             index = index + 1
 
             # 1. https://stocktwits.com/developers/docs/display_requirement
             st_compliant_posts.append(self.__build_st_compliant_post(message))
@@ -114,10 +112,9 @@ class StockTwitsWrapper:
 
         word_map = self.__build_word_map(simple_messages)
 
-        # TODO: find the right place for this
-        self.__update_word_frequencies(ticker, 'DERP', 2)
+        self.__update_word_frequencies(ticker, word_map)
 
-        # TODO: send to DB and update, return results from DB and st_compliant_posts.
+        # TODO: retrieve ticker words from db
 
         return GetTickerResponse(rate_remaining, rate_reset, symbol, co_name, st_compliant_posts, word_map)
 
@@ -141,8 +138,9 @@ class StockTwitsWrapper:
         # http://www.artima.com/weblogs/viewpost.jsp?thread=98196
         word_map = {}
         for word in all_words:
-            frequency = word_map.get(word, 0)
-            word_map[word] = frequency + 1
+            if(len(word) > 1):
+                frequency = word_map.get(word, 0)
+                word_map[word] = frequency + 1
 
         return word_map
 
@@ -213,10 +211,11 @@ class StockTwitsWrapper:
             abort(response_code)
 
     @classmethod
-    def __update_word_frequencies(self, ticker, word, count):
+    def __update_word_frequencies(self, ticker, word_map):
         with closing(self.mysql_conn.cursor()) as cursor:
-            # ticker, word, count
-            cursor.callproc('update_word_frequencies', (ticker, word, count))
+            for word in word_map:
+                # ticker, word, count
+                cursor.callproc('update_word_frequencies', (ticker, word, word_map[word]))
             self.mysql_conn.commit()
 
     @classmethod

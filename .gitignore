@@ -1,7 +1,7 @@
 /.project
 /.pydevproject
 *.pyc
-*.sh
+/setup_env.sh
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
