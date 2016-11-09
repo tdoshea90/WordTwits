@@ -59,6 +59,8 @@ class StockTwitsWrapper:
         url_postfix = '.json?'
         pagination_since = self.__get_last_message(ticker)
 
+        logging.warning('Ticker: %s. Last message: %s' % (ticker, pagination_since))
+
         # TODO: use visitors token for watchlist, etc.
         # only time we don't have access_token is on localhost so kind of an unnecessary check
         # if 'access_token' in session:
@@ -94,6 +96,7 @@ class StockTwitsWrapper:
 
         # first message is the most recent
         if(len(response_json['messages']) > 0):
+            logging.warning('New last message: %s' % (response_json['messages'][0]['id']))
             last_message = response_json['messages'][0]['id']
             self.__update_last_message(ticker, last_message)
 
