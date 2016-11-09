@@ -118,6 +118,9 @@ class StockTwitsWrapper:
         self.__update_word_frequencies(ticker, word_map)
 
         # TODO: retrieve ticker words from db
+        ticker_tuples = self.__query_ticker(ticker)
+        #word_freq_map = dict((word, freq) for word, freq in ticker_tuples)
+        # print(word_freq_map)
 
         return GetTickerResponse(rate_remaining, rate_reset, symbol, co_name, st_compliant_posts, word_map)
 
@@ -214,24 +217,28 @@ class StockTwitsWrapper:
             abort(response_code)
 
     @classmethod
-    def __update_word_frequencies(self, ticker, word_map):
-        with closing(self.mysql_conn.cursor()) as cursor:
-            for word in word_map:
-                # ticker, word, count
-                cursor.callproc('update_word_frequencies', (ticker, word, word_map[word]))
-            self.mysql_conn.commit()
-
-    @classmethod
     def __get_last_message(self, ticker):
         with closing(self.mysql_conn.cursor()) as cursor:
-            # ticker, last_message return value
             result_args = cursor.callproc('get_last_message', (ticker, 0))
             return result_args[1]
 
     @classmethod
+    def __query_ticker(self, ticker):
+        with closing(self.mysql_conn.cursor()) as cursor:
+            cursor.callproc('query_ticker', (ticker,))
+            query_result = next(cursor.stored_results())
+            return query_result.fetchall()
+
+    @classmethod
+    def __update_word_frequencies(self, ticker, word_map):
+        with closing(self.mysql_conn.cursor()) as cursor:
+            for word in word_map:
+                cursor.callproc('update_word_frequencies', (ticker, word, word_map[word]))
+            self.mysql_conn.commit()
+
+    @classmethod
     def __update_last_message(self, ticker, last_message):
         with closing(self.mysql_conn.cursor()) as cursor:
-            # ticker, last_message
             cursor.callproc('update_last_message', (ticker, last_message))
             self.mysql_conn.commit()
 
