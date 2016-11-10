@@ -1,8 +1,11 @@
+from datetime import datetime
 import os
+import time
 
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, abort
 
 from auth_wrapper import AuthWrapper
+from lib.regexify import Regexify
 from stocktwits_wrapper import StockTwitsWrapper
 
 
@@ -10,9 +13,10 @@ application = Flask(__name__)
 app = application
 app.secret_key = os.environ.get('APP_SECRET_KEY')
 
-stwrapper = StockTwitsWrapper()
-stwrapper.compile_regex_patterns()
 authwrapper = AuthWrapper()
+stwrapper = StockTwitsWrapper()
+regexes = Regexify()
+regexes.compile_regex_patterns()
 
 
 @app.route('/')
@@ -33,6 +37,13 @@ def get_ticker_from_url(url_ticker):
     return render_template('ticker.html', title=ticker, get_ticker_response=get_ticker_response)
 
 
+@app.route('/update/<url_ticker>/')
+def update_ticker(url_ticker):
+    ticker = url_ticker.upper().strip()
+    stwrapper.update_ticker(ticker)
+    return render_template('update_ticker.html', title=ticker)
+
+
 @app.route('/about/')
 def about():
     return render_template('about.html', title='About')
@@ -50,9 +61,8 @@ def auth_redirect_uri():
 
     return redirect(request.url_root)   # go back home after successful auth
 
-
-# i've hardcoded my token for all automated requests. comment this out while developing on localhost.
-# TODO: break this out for visitors to the site and automated requests
+# TODO: turn this on. i've hardcoded my token for all automated requests for now.
+# comment this out while developing on localhost.
 # @app.before_request
 # def check_session():
 #     if '/auth_redirect_uri/' != request.path:
@@ -61,6 +71,28 @@ def auth_redirect_uri():
 #             return redirect(auth_code_url)
 #
 #     return None
+
+
+# TODO: maybe move this off of all requests and have a query db only request if rate is up.
+@app.before_request
+def check_rate_reset():
+    """ we must obey """
+
+    local_time_now = time.time()
+    utc_offset = (datetime.fromtimestamp(
+        local_time_now) - datetime.utcfromtimestamp(local_time_now)).total_seconds()
+    local_utc_time_now = float(datetime.utcnow().strftime("%s"))
+    true_utc_time_now = local_utc_time_now + utc_offset
+
+    utc_rate_reset = float(session.get('rate_reset', true_utc_time_now))
+
+    # 1. check if we can reset the time left
+    if true_utc_time_now >= utc_rate_reset:
+        session['rate_limited'] = False
+
+    # 2. check if rate limit has been reached
+    if session.get('rate_limited', False):
+        abort(429)
 
 
 @app.errorhandler(404)

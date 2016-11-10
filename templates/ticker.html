@@ -62,8 +62,9 @@
 <script type="text/javascript">
 // On screen load
 $(function() {
-    var wordMap = {{ get_ticker_response.word_map|tojson }}
-    var sortedFrequencyList = buildFrequencyList(wordMap);
+//     var wordMap = {{ get_ticker_response.word_map|tojson }}
+//     var sortedFrequencyList = buildFrequencyList(wordMap);
+    var sortedFrequencyList = {{ get_ticker_response.word_map|tojson }}
 
     var cloudDiv = document.getElementById("wordcloudTab");
     width = cloudDiv.clientWidth;
