@@ -27,5 +27,7 @@ class ExtendedStopWords():
                 'said',
                 'says?',
                 'anyone',
-                'see'
+                'see',
+                'today',
+                'tomorrow'
                 ]

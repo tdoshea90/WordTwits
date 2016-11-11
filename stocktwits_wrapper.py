@@ -88,6 +88,7 @@ class StockTwitsWrapper:
 #         logging.warn(all_words)
 #         logging.warn('>>>>>>>>>>>>>>>>>new_words>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         self.__update_word_frequencies(ticker, all_words)
+        logging.warn('%s Updated' % ticker)
         return
 
     @classmethod
@@ -155,12 +156,14 @@ class StockTwitsWrapper:
 
     @classmethod
     def __get_last_message(self, ticker):
+        self.__check_connection()
         with closing(self.mysql_conn.cursor()) as cursor:
             result_args = cursor.callproc('get_last_message', (ticker, 0))
             return result_args[1]
 
     @classmethod
     def __query_ticker(self, ticker):
+        self.__check_connection()
         with closing(self.mysql_conn.cursor()) as cursor:
             cursor.callproc('query_ticker', (ticker,))
             query_result = next(cursor.stored_results())
@@ -168,6 +171,7 @@ class StockTwitsWrapper:
 
     @classmethod
     def __update_word_frequencies(self, ticker, word_map):
+        self.__check_connection()
         with closing(self.mysql_conn.cursor()) as cursor:
             for word in word_map:
                 # TODO: benchmark this
@@ -176,9 +180,16 @@ class StockTwitsWrapper:
 
     @classmethod
     def __update_last_message(self, ticker, last_message):
+        self.__check_connection()
         with closing(self.mysql_conn.cursor()) as cursor:
             cursor.callproc('update_last_message', (ticker, last_message))
             self.mysql_conn.commit()
+
+    @classmethod
+    def __check_connection(self):
+        if not self.mysql_conn.is_connected():
+            logging.error('Connection dropped, reconnecting.')
+            self.mysql_conn = MysqlWrapper.get_connection()
 
 
 class GetTickerResponse:
