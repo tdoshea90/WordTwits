@@ -159,15 +159,18 @@ class StockTwitsWrapper:
         self.__check_connection()
         with closing(self.mysql_conn.cursor()) as cursor:
             result_args = cursor.callproc('get_last_message', (ticker, 0))
-            return result_args[1]
+            last_message = result_args[1]
+            self.mysql_conn.commit()
+            return last_message
 
     @classmethod
     def __query_ticker(self, ticker):
         self.__check_connection()
         with closing(self.mysql_conn.cursor()) as cursor:
             cursor.callproc('query_ticker', (ticker,))
-            query_result = next(cursor.stored_results())
-            return query_result.fetchall()
+            query_result = next(cursor.stored_results()).fetchall()
+            self.mysql_conn.commit()
+            return query_result
 
     @classmethod
     def __update_word_frequencies(self, ticker, word_map):
