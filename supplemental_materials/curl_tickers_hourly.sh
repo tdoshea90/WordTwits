@@ -1,204 +1,220 @@
 #!/bin/bash
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/AAPL/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/ABBV/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/ABT/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/ACN/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/AGN/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/AIG/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/ALL/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/AMGN/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/AMZN/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/AXP/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/BA/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/BAC/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/BIIB/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/BK/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/BLK/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/BMY/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/BRK.B/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/C/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/CAT/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/CELG/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/CL/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/CMCSA/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/COF/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/COP/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/COST/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/CSCO/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/CVS/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/CVX/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/DD/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/DHR/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/DIS/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/DOW/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/DUK/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/EMC/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/EMR/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/EXC/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/F/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/FB/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/FDX/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/FOX/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/FOXA/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/GD/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/GE/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/GILD/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/GM/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/GOOG/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/GOOGL/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/GS/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/HAL/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/HD/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/HON/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/IBM/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/INTC/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/JNJ/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/JPM/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/KMI/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/KO/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/LLY/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/LMT/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/LOW/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MA/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MCD/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MDLZ/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MDT/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MET/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MMM/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MO/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MON/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MRK/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MS/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/MSFT/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/NEE/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/NKE/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/ORCL/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/OXY/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/PCLN/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/PEP/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/PFE/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/PG/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/PM/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/PYPL/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/QCOM/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/RTN/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/SBUX/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/SLB/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/SO/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/SPG/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/T/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/TGT/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/TWX/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/TXN/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/UNH/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/UNP/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/UPS/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/USB/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/UTX/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/V/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/VZ/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/WBA/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/WFC/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/WMT/ | echo ""
-sleep 10
-curl -s http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/XOM/ | echo ""
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/AAPL/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/ABBV/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/ABT/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/ACN/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/AGN/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/AIG/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/ALL/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/AMGN/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/AMZN/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/AXP/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/BA/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/BAC/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/BIIB/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/BK/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/BLK/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/BMY/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/BRK.B/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/C/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/CAT/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/CELG/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/CL/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/CMCSA/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/COF/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/COP/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/COST/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/CSCO/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/CVS/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/CVX/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/DD/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/DHR/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/DIS/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/DOW/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/DUK/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/EMC/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/EMR/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/EXC/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/F/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/FB/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/FDX/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/FOXA/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/GD/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/GE/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/GILD/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/GM/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/GOOG/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/GOOGL/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/GS/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/HAL/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/HD/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/HON/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/IBM/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/INTC/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/JNJ/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/JPM/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/KMI/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/KO/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/LLY/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/LMT/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/LOW/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MA/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MCD/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MDLZ/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MDT/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MET/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MMM/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MO/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MON/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MRK/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MS/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/MSFT/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/NEE/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/NKE/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/ORCL/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/OXY/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/PCLN/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/PEP/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/PFE/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/PG/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/PM/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/PYPL/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/Qcom/update/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/RTN/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/SBUX/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/SLB/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/SO/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/SPG/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/T/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/TGT/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/TWX/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/TXN/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/UNH/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/UNP/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/UPS/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/USB/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/UTX/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/V/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/VZ/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/WBA/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/WFC/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/WMT/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/XOM/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/TSLA/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/INO/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/BDSI/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/SCTY/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/JNUG/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/UVXY/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/NVAX/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/SPY/ | echo ""
+sleep 5
+curl -s -N http://stocktwitsanalyzer-env.us-west-2.elasticbeanstalk.com/update/IBB/ | echo ""

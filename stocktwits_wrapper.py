@@ -86,7 +86,9 @@ class StockTwitsWrapper:
 
         end_time = time.time()
         total_time = (end_time - start_time)
-        logging.warn('%s updated in %d seconds' % (ticker, total_time))
+        logging.warn('%s updated in %d seconds. Requests left: %s' % (ticker,
+                                                                      total_time,
+                                                                      session.get('rate_remaining', 'none?')))
         return
 
     @classmethod

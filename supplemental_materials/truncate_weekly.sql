@@ -1,0 +1,1 @@
+CALL truncate_weekly();

@@ -1,6 +1,19 @@
 {
   "objects": [
     {
+      "schedule": {
+        "ref": "DefaultSchedule"
+      },
+      "scriptUri": "s3://wordtwits/curl_tickers_hourly.sh",
+      "maxActiveInstances": "1",
+      "name": "curl_tickers_hourly",
+      "id": "ShellCommandActivityId_mNVG7",
+      "runsOn": {
+        "ref": "ResourceId_USwIy"
+      },
+      "type": "ShellCommandActivity"
+    },
+    {
       "databaseName": "WordTwitsDatabase",
       "*password": "<password>",
       "name": "wordtwitsdb",
@@ -10,11 +23,19 @@
       "username": "stocktwits_sys"
     },
     {
+      "failureAndRerunMode": "CASCADE",
+      "resourceRole": "DataPipelineDefaultResourceRole",
+      "role": "DataPipelineDefaultRole",
+      "scheduleType": "cron",
+      "name": "Default",
+      "id": "Default"
+    },
+    {
       "role": "DataPipelineDefaultRole",
       "imageId": "ami-5c2f8f3c",
       "instanceType": "t2.micro",
       "type": "Ec2Resource",
-      "terminateAfter": "2 Minutes",
+      "terminateAfter": "25 Minutes",
       "runAsUser": "ec2-user",
       "schedule": {
         "ref": "ScheduleId_tAdi8"
@@ -22,33 +43,9 @@
       "resourceRole": "DataPipelineDefaultResourceRole",
       "instanceCount": "1",
       "maxActiveInstances": "1",
-      "name": "resource_2",
+      "name": "weekly_resource",
       "keyPair": "sheatimKeyPair2",
       "id": "ResourceId_tNRJv"
-    },
-    {
-      "role": "DataPipelineDefaultRole",
-      "imageId": "ami-5c2f8f3c",
-      "instanceType": "t2.micro",
-      "type": "Ec2Resource",
-      "terminateAfter": "20 Minutes",
-      "runAsUser": "ec2-user",
-      "schedule": {
-        "ref": "DefaultSchedule"
-      },
-      "resourceRole": "DataPipelineDefaultResourceRole",
-      "instanceCount": "1",
-      "maxActiveInstances": "1",
-      "name": "resource_1",
-      "keyPair": "sheatimKeyPair2",
-      "id": "ResourceId_USwIy"
-    },
-    {
-      "period": "1 hours",
-      "name": "every_1_hour",
-      "id": "DefaultSchedule",
-      "type": "Schedule",
-      "startAt": "FIRST_ACTIVATION_DATE_TIME"
     },
     {
       "schedule": {
@@ -57,8 +54,8 @@
       "database": {
         "ref": "DatabaseId_wNwEn"
       },
-      "scriptUri": "s3://wordtwits/truncate_daily.sql",
-      "name": "truncate_daily",
+      "scriptUri": "s3://wordtwits/truncate_weekly.sql",
+      "name": "truncate_weekly",
       "id": "SqlActivityId_zVihr",
       "runsOn": {
         "ref": "ResourceId_tNRJv"
@@ -66,35 +63,34 @@
       "type": "SqlActivity"
     },
     {
-      "schedule": {
-        "ref": "DefaultSchedule"
-      },
-      "scriptUri": "s3://wordtwits/curl_tickers.sh",
-      "maxActiveInstances": "1",
-      "name": "curl_tickers",
-      "id": "ShellCommandActivityId_mNVG7",
-      "runsOn": {
-        "ref": "ResourceId_USwIy"
-      },
-      "type": "ShellCommandActivity"
-    },
-    {
-      "failureAndRerunMode": "CASCADE",
+      "role": "DataPipelineDefaultRole",
+      "imageId": "ami-5c2f8f3c",
+      "instanceType": "t2.micro",
+      "type": "Ec2Resource",
+      "terminateAfter": "15 Minutes",
+      "runAsUser": "ec2-user",
       "schedule": {
         "ref": "DefaultSchedule"
       },
       "resourceRole": "DataPipelineDefaultResourceRole",
-      "role": "DataPipelineDefaultRole",
-      "pipelineLogUri": "s3://wordtwits-dplogs/datapipeline_logs",
-      "scheduleType": "cron",
-      "name": "Default",
-      "id": "Default"
+      "instanceCount": "1",
+      "maxActiveInstances": "1",
+      "name": "hourly_resource",
+      "keyPair": "sheatimKeyPair2",
+      "id": "ResourceId_USwIy"
     },
     {
-      "period": "1 Day",
-      "startDateTime": "2016-11-08T05:00:00",
-      "name": "every_1_day",
+      "period": "1 Week",
+      "startDateTime": "2016-11-12T05:00:00",
+      "name": "every_1_week",
       "id": "ScheduleId_tAdi8",
+      "type": "Schedule"
+    },
+    {
+      "period": "1 hours",
+      "startDateTime": "2016-11-11T08:30:00",
+      "name": "every_1_hour",
+      "id": "DefaultSchedule",
       "type": "Schedule"
     }
   ],
