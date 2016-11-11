@@ -35,7 +35,7 @@ CREATE TABLE `tickers` (
   UNIQUE KEY `ticker_UNIQUE` (`ticker`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `company_name_UNIQUE` (`company_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=217923 DEFAULT CHARSET=latin1 COMMENT='Table for all tickers';
+) ENGINE=InnoDB AUTO_INCREMENT=217928 DEFAULT CHARSET=latin1 COMMENT='Table for all tickers';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +71,7 @@ CREATE TABLE `word_frequencies` (
   UNIQUE KEY `uq_ticker_idx` (`ticker_id`,`word`),
   KEY `fk_ticker_id_idx` (`ticker_id`),
   CONSTRAINT `fk_ticker_id` FOREIGN KEY (`ticker_id`) REFERENCES `tickers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18420 DEFAULT CHARSET=latin1 COMMENT='Word Frequency fact table';
+) ENGINE=InnoDB AUTO_INCREMENT=18425 DEFAULT CHARSET=latin1 COMMENT='Word Frequency fact table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,6 +117,31 @@ BEGIN
     ORDER BY frequency DESC
     LIMIT 50;
     
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `query_word` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`tdoshea90`@`%` PROCEDURE `query_word`(IN word_arg CHAR(5))
+BEGIN
+
+    SELECT tickers.ticker, word_frequencies.frequency
+    FROM word_frequencies
+    INNER JOIN tickers ON word_frequencies.ticker_id = tickers.id
+    WHERE word_frequencies.word=word_arg AND frequency > 1
+    ORDER BY frequency DESC;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -210,4 +235,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-11  0:53:56
+-- Dump completed on 2016-11-11  1:15:40

@@ -2,7 +2,6 @@ from contextlib import closing
 import html
 import logging
 import os
-import time
 
 from flask import abort, session
 import requests
@@ -52,8 +51,6 @@ class StockTwitsWrapper:
     def update_ticker(self, ticker):
         """ update the ticker in the db """
 
-        start_time = time.time()
-
         since_param = self.__get_pagination_param(ticker)
 
         # TODO: make a system account on ST and use for all automated calls.
@@ -83,12 +80,6 @@ class StockTwitsWrapper:
 
         all_words = [(word) for message in simple_messages for word in message.split()]
         self.__update_word_frequencies(ticker, all_words)
-
-        end_time = time.time()
-        total_time = (end_time - start_time)
-        logging.warn('%s updated in %d seconds. Requests left: %s' % (ticker,
-                                                                      total_time,
-                                                                      session.get('rate_remaining', 'none?')))
         return
 
     @classmethod
@@ -163,6 +154,15 @@ class StockTwitsWrapper:
         self.__check_connection()
         with closing(self.mysql_conn.cursor()) as cursor:
             cursor.callproc('query_ticker', (ticker,))
+            query_result = next(cursor.stored_results()).fetchall()
+            self.mysql_conn.commit()
+            return query_result
+
+    @classmethod
+    def __query_word(self, word):
+        self.__check_connection()
+        with closing(self.mysql_conn.cursor()) as cursor:
+            cursor.callproc('query_word', (word,))
             query_result = next(cursor.stored_results()).fetchall()
             self.mysql_conn.commit()
             return query_result
