@@ -2,6 +2,7 @@ from contextlib import closing
 import html
 import logging
 import os
+import time
 
 from flask import abort, session
 import requests
@@ -45,15 +46,13 @@ class StockTwitsWrapper:
                 )
             )
 
-#         logging.warn('>>>>>>>>>>>>>>>>>stored_results>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-#         logging.warn(result_set_list)
-#         logging.warn('>>>>>>>>>>>>>>>>>stored_results>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-
         return GetTickerResponse(ticker, response_json['symbol']['title'], st_compliant_posts, result_set_list)
 
     @classmethod
     def update_ticker(self, ticker):
         """ update the ticker in the db """
+
+        start_time = time.time()
 
         since_param = self.__get_pagination_param(ticker)
 
@@ -64,7 +63,6 @@ class StockTwitsWrapper:
         all_messages = response_json['messages']
 
         if(len(all_messages) < 1):
-            # logging.warn('No new messages for %s' % ticker)
             return
 
         # first message is the most recent
@@ -84,11 +82,11 @@ class StockTwitsWrapper:
                 simple_messages.append(simple_message)
 
         all_words = [(word) for message in simple_messages for word in message.split()]
-#         logging.warn('>>>>>>>>>>>>>>>>>new_words>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-#         logging.warn(all_words)
-#         logging.warn('>>>>>>>>>>>>>>>>>new_words>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
         self.__update_word_frequencies(ticker, all_words)
-        logging.warn('%s Updated' % ticker)
+
+        end_time = time.time()
+        total_time = (end_time - start_time)
+        logging.warn('%s updated in %d seconds' % (ticker, total_time))
         return
 
     @classmethod
@@ -96,10 +94,7 @@ class StockTwitsWrapper:
         pagination_since = self.__get_last_message(ticker)
         since_param = str(pagination_since)
         if pagination_since == -1:
-            # logging.warn('First query for %s, pagination param = -1 %s' % ticker)
             since_param = ''
-#         else:
-#             logging.warn('Not first query for %s, paginating since %s' % (ticker, since_param))
 
         return since_param
 
@@ -114,8 +109,6 @@ class StockTwitsWrapper:
         rate_reset = response.headers.get('X-RateLimit-Reset')
         session['rate_remaining'] = rate_remaining
         session['rate_reset'] = rate_reset  # returned in true UTC time
-
-#         logging.warn('Requests remaining: %s' % session.get('rate_remaining'))
 
         self.__check_response_code(response_json, rate_remaining)
 
@@ -191,7 +184,6 @@ class StockTwitsWrapper:
     @classmethod
     def __check_connection(self):
         if not self.mysql_conn.is_connected():
-            logging.error('Connection dropped, reconnecting.')
             self.mysql_conn = MysqlWrapper.get_connection()
 
 

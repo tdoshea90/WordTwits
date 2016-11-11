@@ -29,5 +29,6 @@ class ExtendedStopWords():
                 'anyone',
                 'see',
                 'today',
-                'tomorrow'
+                'tomorrow',
+                'can'
                 ]
