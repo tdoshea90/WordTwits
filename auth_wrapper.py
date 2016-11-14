@@ -1,3 +1,4 @@
+import logging
 import os
 import urllib.parse
 
@@ -43,6 +44,8 @@ class AuthWrapper:
         access_token = auth_token_json['access_token']
         user_id = auth_token_json['user_id']
         username = auth_token_json['username']
+
+        logging.error('New oauth token: %s' % access_token)
 
         return TokenResponse(access_token, user_id, username)
 

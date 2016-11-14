@@ -63,16 +63,15 @@ def auth_redirect_uri():
     return redirect(request.url_root)   # go back home after successful auth
 
 
-# TODO: fix
 # comment this out while developing on localhost.
-# @app.before_request
-# def check_session():
-#     if 'auth_redirect_uri' != request.path or 'update_ticker' != request.path:
-#         if 'user_id' not in session or 'access_token' not in session:
-#             auth_code_url = authwrapper.get_auth_code_url(request.url_root)
-#             return redirect(auth_code_url)
-#
-#     return None
+@app.before_request
+def check_session():
+    if 'auth_redirect_uri' != request.endpoint and 'update_ticker' != request.endpoint:
+        if 'user_id' not in session or 'access_token' not in session:
+            auth_code_url = authwrapper.get_auth_code_url(request.url_root)
+            return redirect(auth_code_url)
+
+    return None
 
 
 # TODO: maybe move this off of all requests and have a query db only request if rate is up.
