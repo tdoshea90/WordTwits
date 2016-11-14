@@ -1,7 +1,6 @@
 from contextlib import closing
 import html
 import logging
-import os
 
 from flask import abort, session
 import requests
@@ -16,15 +15,16 @@ class StockTwitsWrapper:
     mysql_conn = MysqlWrapper.get_connection()
     regexes = Regexify()
 
-    tims_oauth_token = os.environ.get('ST_OAUTH_TOKEN')
     bot_blacklist = [727510]
 
     @classmethod
     def get_ticker(self, ticker):
         """ https://stocktwits.com/developers/docs/api#streams-symbol-docs """
 
+        oauth_token = session.get('access_token', '')
+
         request_url = self.__build_get_symbol_url(ticker)
-        request_params = self.__build_get_symbol_params(session.get('access_token', ''), '')
+        request_params = self.__build_get_symbol_params(oauth_token, '')
         response_json = self.__get_symbol(request_url, request_params)
         st_compliant_posts = []
         for message in response_json['messages']:
@@ -33,7 +33,7 @@ class StockTwitsWrapper:
 
         # TODO: thread the above and below, they are unrelated.
 
-        self.update_ticker(ticker)
+        self.update_ticker(ticker, oauth_token)
 
         ticker_tuples = self.__query_ticker(ticker)
         result_set_list = []
@@ -48,14 +48,14 @@ class StockTwitsWrapper:
         return GetTickerResponse(ticker, response_json['symbol']['title'], st_compliant_posts, result_set_list)
 
     @classmethod
-    def update_ticker(self, ticker):
+    def update_ticker(self, ticker, oauth_token):
         """ update the ticker in the db """
 
         since_param = self.__get_pagination_param(ticker)
 
         # TODO: make a system account on ST and use for all automated calls.
         request_url = self.__build_get_symbol_url(ticker)
-        request_params = self.__build_get_symbol_params(self.tims_oauth_token, since_param)
+        request_params = self.__build_get_symbol_params(oauth_token, since_param)
         response_json = self.__get_symbol(request_url, request_params)
         all_messages = response_json['messages']
 
@@ -98,6 +98,8 @@ class StockTwitsWrapper:
 
         # check rate headers from response. headers are strings.
         # http://stocktwits.com/developers/docs/rate_limiting
+        # unauthenticated calls originate from the ec2 instance.
+        # basically 200 unauthenticated calls an hour total for the site.
         rate_remaining = response.headers.get('X-RateLimit-Remaining')
         rate_reset = response.headers.get('X-RateLimit-Reset')
         session['rate_remaining'] = rate_remaining
