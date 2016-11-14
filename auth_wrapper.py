@@ -21,9 +21,8 @@ class AuthWrapper:
             scope='read'
         )
 
-        auth_code_url = 'https://api.stocktwits.com/api/2/oauth/authorize?'
         url_params = urllib.parse.urlencode(auth_code_params)
-        return auth_code_url + url_params
+        return '%s%s' % ('https://api.stocktwits.com/api/2/oauth/authorize?', url_params)
 
     @classmethod
     def get_auth_token(self, auth_code, auth_redirect_root):
