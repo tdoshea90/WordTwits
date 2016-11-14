@@ -10,3 +10,4 @@ TODO:
 for that specific stock. Links back to site.
 - Buy domain, do a security pass.
 - Add ability to delete words from cloud and re-balance. 'Trump' is the top hit everywhere right now.
+- Health check in ELB deployment preferences.
