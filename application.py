@@ -104,6 +104,16 @@ def check_rate_reset():
         abort(429)
 
 
+@app.errorhandler(401)
+def access_denied(error):
+    return render_template('access_denied.html', title='401'), 401
+
+
+@app.forbidden(403)
+def forbidden(error):
+    return render_template('forbidden.html', title='403'), 403
+
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html', title='404'), 404

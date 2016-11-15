@@ -1,7 +1,7 @@
 import logging
 import os
 import urllib.parse
-
+from flask import abort
 import requests
 
 
@@ -41,6 +41,8 @@ class AuthWrapper:
         auth_token_response = requests.post(url=auth_token_url, data=auth_token_params)
         auth_token_json = auth_token_response.json()
 
+        self.__check_response_code(auth_token_json)
+
         access_token = auth_token_json['access_token']
         user_id = auth_token_json['user_id']
         username = auth_token_json['username']
@@ -48,6 +50,16 @@ class AuthWrapper:
         logging.error('New oauth token: %s' % access_token)
 
         return TokenResponse(access_token, user_id, username)
+
+    @classmethod
+    def __check_response_code(self, response_json):
+        response_code = response_json['response']['status']
+        if response_code != 200:
+            logging.error('Response code: %s' % (response_code))
+            if 'errors' in response_json:
+                logging.error(response_json['errors'])
+
+            abort(response_code)
 
 
 class TokenResponse:
