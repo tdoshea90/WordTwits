@@ -22,7 +22,6 @@ regexes.compile_regex_patterns()
 
 @app.route('/')
 def home():
-    check_session()
     return render_template('home.html', title='WordTwits')
 
 
@@ -69,11 +68,10 @@ def auth_redirect_uri():
     return redirect(request.url_root)   # go back home after successful auth
 
 
-# TODO fix
 # comment this out while developing on localhost.
 @app.before_request
 def check_session():
-    if '/auth_redirect_uri/' != request.path:
+    if 'auth_redirect_uri' != request.endpoint and 'update_ticker' != request.endpoint:
         if 'user_id' not in session or 'access_token' not in session:
             auth_code_url = authwrapper.get_auth_code_url(request.url_root)
 
