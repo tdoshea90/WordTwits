@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 import os
 import time
 
@@ -21,6 +22,7 @@ regexes.compile_regex_patterns()
 
 @app.route('/')
 def home():
+    check_session()
     return render_template('home.html', title='WordTwits')
 
 
@@ -54,25 +56,33 @@ def about():
 def auth_redirect_uri():
     exchange_code = request.args.get('code')
 
+    logging.error('Exchange code: %s' % exchange_code)
+
     token_response = authwrapper.get_auth_token(exchange_code, request.url_root)
 
     session['access_token'] = token_response.access_token
     session['user_id'] = token_response.user_id
     session['username'] = token_response.username
 
+    logging.error('Access token: %s' % session.get('access_token', 'None found?'))
+
     return redirect(request.url_root)   # go back home after successful auth
 
 
 # TODO fix
 # comment this out while developing on localhost.
-# @app.before_request
-# def check_session():
-#     if '/auth_redirect_uri/' != request.path:
-#         if 'user_id' not in session or 'access_token' not in session:
-#             auth_code_url = authwrapper.get_auth_code_url(request.url_root)
-#             return redirect(auth_code_url)
-#
-#     return None
+#@app.before_request
+def check_session():
+    if '/auth_redirect_uri/' != request.path:
+        if 'user_id' not in session or 'access_token' not in session:
+            logging.error('Requesting auth code')
+            auth_code_url = authwrapper.get_auth_code_url(request.url_root)
+
+            logging.error('Redirecting to auth code url: %s' % auth_code_url)
+
+            return redirect(auth_code_url)
+
+    return None
 
 
 # TODO: maybe move this off of all requests and have a query db only request if rate is up.
