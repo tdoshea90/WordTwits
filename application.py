@@ -109,7 +109,7 @@ def access_denied(error):
     return render_template('access_denied.html', title='401'), 401
 
 
-@app.forbidden(403)
+@app.errorhandler(403)
 def forbidden(error):
     return render_template('forbidden.html', title='403'), 403
 
