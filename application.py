@@ -1,5 +1,4 @@
 from datetime import datetime
-import logging
 import os
 import time
 
@@ -54,16 +53,11 @@ def about():
 @app.route('/auth_redirect_uri/')
 def auth_redirect_uri():
     exchange_code = request.args.get('code')
-
-    logging.error('Exchange code: %s' % exchange_code)
-
     token_response = authwrapper.get_auth_token(exchange_code, request.url_root)
 
     session['access_token'] = token_response.access_token
     session['user_id'] = token_response.user_id
     session['username'] = token_response.username
-
-    logging.error('Access token: %s' % session.get('access_token', 'None found?'))
 
     return redirect(request.url_root)   # go back home after successful auth
 
@@ -74,18 +68,15 @@ def check_session():
     if 'auth_redirect_uri' != request.endpoint and 'update_ticker' != request.endpoint:
         if 'user_id' not in session or 'access_token' not in session:
             auth_code_url = authwrapper.get_auth_code_url(request.url_root)
-
-            logging.error('Redirecting to auth code url: %s' % auth_code_url)
-
             return redirect(auth_code_url)
 
     return None
 
 
-# TODO: maybe move this off of all requests and have a query db only request if rate is up.
 @app.before_request
 def check_rate_reset():
     """ we must obey """
+    # TODO: maybe move this off of all requests
 
     local_time_now = time.time()
     utc_offset = (datetime.fromtimestamp(
@@ -104,14 +95,9 @@ def check_rate_reset():
         abort(429)
 
 
-@app.errorhandler(401)
-def access_denied(error):
-    return render_template('access_denied.html', title='401'), 401
-
-
-@app.errorhandler(403)
-def forbidden(error):
-    return render_template('forbidden.html', title='403'), 403
+@app.errorhandler(400)
+def no_app_access(error):
+    return render_template('no_app_access.html', title='400'), 400
 
 
 @app.errorhandler(404)

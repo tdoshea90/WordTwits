@@ -105,10 +105,6 @@ class StockTwitsWrapper:
         session['rate_remaining'] = rate_remaining
         session['rate_reset'] = rate_reset  # returned in true UTC time
 
-#         logging.error('Response for: %s' % response_json['symbol']['symbol'])
-        logging.error('Rate remaining: %s' % rate_remaining)
-        logging.error('Access Token: %s' % session.get('access_token', 'Unauthenticated'))
-
         self.__check_response_code(response_json, rate_remaining)
 
         return response_json
