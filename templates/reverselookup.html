@@ -1,0 +1,122 @@
+{% extends "skeleton.html" %}
+{% block content %}
+
+<span id="fontSizeTest"></span>
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <b>{{ title }}</b>
+            </h1>
+        </div>
+        <div class="panel-body">
+
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active">
+                    <a href="#wordcloudTab" aria-controls="wordcloudTab" role="pill" data-toggle="pill">Word Cloud</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="tab-content">
+
+        <div role="tabpanel" class="tab-pane active" id="wordcloudTab"></div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+// On screen load
+$(function() {
+//     var wordMap = {{ reverselookup_response.reverselookup_map|tojson }}
+//     var sortedFrequencyList = buildFrequencyList(wordMap);
+    var sortedFrequencyList = {{ reverselookup_response.reverselookup_map|tojson }}
+
+    var cloudDiv = document.getElementById("wordcloudTab");
+
+    if (sortedFrequencyList.length == 0) {
+        cloudDiv.innerHTML = "<h1>Not enough data for given word.</h1>";
+        return;
+    }
+
+    width = cloudDiv.clientWidth;
+    height = window.innerHeight * (3/4);    // 3/4 to move the cloud higher up on the screen
+
+    var wordVolume = calculateWordVolume(sortedFrequencyList, (width * height));
+
+    // TODO: investigate different fill scales, what does category20 mean?
+    var fill = d3.scale.category20();
+    // https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
+
+    var scaleWord = d3.scale.linear()  // sqrt, linear, log, quantile, quantize.
+        .domain([sortedFrequencyList[sortedFrequencyList.length - 1].size, sortedFrequencyList[0].size])
+        .range([wordVolume.min, wordVolume.max]);
+
+//     var listString = "";
+//     for (i = 0; i < sortedFrequencyList.length; i++) {
+//         var word = sortedFrequencyList[i];
+//         listString += (word.text + ":" + word.size + ":" + scaleWord(word.size) + " ");
+//     }
+//     console.log(listString);
+
+    // cloudDiv.offsetHeight crashes d3.cloud, think it might be 0. shitty validation on their part.
+    var layout = d3.layout.cloud()
+        .size([width, height])
+        .words(sortedFrequencyList)
+        .rotate(0)
+        .fontSize(function(d) { return scaleWord(d.size); })
+        .spiral("rectangular")   // archimedean is default
+        .padding(2)              // default is 1
+        .on("end", draw);
+
+    layout.start();
+
+    function draw(words) {
+        d3.select("#wordcloudTab")
+            .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+            .append("g")
+                .attr("transform", "translate(" + [width >> 1, height >> 1] + ")")               
+            .selectAll("text")
+                .data(words)
+            .enter()
+            .append("text")
+                .style("font-size", function(d) { return (d.size + "px"); })
+                .style("fill", function(d, i) { return fill(i); })
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+    }
+});
+
+// Transform into the form that d3 cloud needs
+function buildFrequencyList(wordMap) {
+    var sortedFrequencyList = [];
+    for (var word in wordMap) {
+        if (word.length < 2) {
+            continue;
+        }
+
+        var wordFrequency = wordMap[word];
+        var wordFrequencyMap = {
+            text: word,
+            size: wordFrequency
+        };
+
+        if (wordFrequency > 1) {
+            binaryInsert(wordFrequencyMap, sortedFrequencyList);
+        }
+    }
+
+    return sortedFrequencyList.slice(0, 50);
+}
+</script>
+
+{% endblock %}

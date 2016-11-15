@@ -52,8 +52,6 @@ class StockTwitsWrapper:
         """ update the ticker in the db """
 
         since_param = self.__get_pagination_param(ticker)
-
-        # TODO: make a system account on ST and use for all automated calls.
         request_url = self.__build_get_symbol_url(ticker)
         request_params = self.__build_get_symbol_params(oauth_token, since_param)
         response_json = self.__get_symbol(request_url, request_params)
@@ -81,6 +79,20 @@ class StockTwitsWrapper:
         all_words = [(word) for message in simple_messages for word in message.split()]
         self.__update_word_frequencies(ticker, all_words)
         return
+
+    @classmethod
+    def get_reverselookup(self, word):
+        reverselookup_tuples = self.__query_word(word)
+        result_set_list = []
+        for reverselookup_tuple in reverselookup_tuples:
+            result_set_list.append(
+                dict(
+                    text=reverselookup_tuple[0],
+                    size=reverselookup_tuple[1]
+                )
+            )
+
+        return ReverseLookupResponse(result_set_list)
 
     @classmethod
     def __get_pagination_param(self, ticker):
@@ -198,6 +210,12 @@ class GetTickerResponse:
         self.co_name = co_name
         self.posts = posts
         self.word_map = word_map
+
+
+class ReverseLookupResponse:
+
+    def __init__(self, reverselookup_map):
+        self.reverselookup_map = reverselookup_map
 
 
 class STCompliantPost:

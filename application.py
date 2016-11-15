@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import re
 import time
 
 from flask import Flask, render_template, request, redirect, url_for, session, abort
@@ -18,6 +19,9 @@ stwrapper = StockTwitsWrapper()
 regexes = Regexify()
 regexes.compile_regex_patterns()
 
+ticker_regex = re.compile(r'[A-Za-z0-9_.]{1,5}')
+reverselookup_regex = re.compile(r'[A-Za-z]{2,64}')
+
 
 @app.route('/')
 def home():
@@ -32,14 +36,35 @@ def get_ticker_from_search():
 
 @app.route('/<url_ticker>/')
 def get_ticker_from_url(url_ticker):
+    if not ticker_regex.match(url_ticker):
+        abort(404)
     ticker = url_ticker.upper().strip()
     get_ticker_response = stwrapper.get_ticker(ticker)
     return render_template('ticker.html', title=ticker, get_ticker_response=get_ticker_response)
 
 
+@app.route('/reverselookup/', methods=['POST'])
+def reverse_lookup_from_search():
+    word = request.form['word']
+    return redirect(url_for('reverse_lookup_from_url', url_reverselookup=word))
+
+
+@app.route('/reverselookup/<url_reverselookup>/')
+def reverse_lookup_from_url(url_reverselookup):
+    if not reverselookup_regex.match(url_reverselookup):
+        abort(404)
+    word = url_reverselookup.upper().strip()
+    reverselookup_response = stwrapper.get_reverselookup(word)
+    return render_template('reverselookup.html', title=word, reverselookup_response=reverselookup_response)
+
+
 @app.route('/update/<url_ticker>/')
 def update_ticker(url_ticker):
+    if not ticker_regex.match(url_ticker):
+        abort(404)
     ticker = url_ticker.upper().strip()
+    # TODO: make a system account on ST and use for all automated calls.
+    # new app secret keys will kill session and create new token
     tims_oauth_token = os.environ.get('ST_OAUTH_TOKEN')
     stwrapper.update_ticker(ticker, tims_oauth_token)
     return render_template('update_ticker.html', title=ticker)
@@ -76,7 +101,7 @@ def check_session():
 @app.before_request
 def check_rate_reset():
     """ we must obey """
-    # TODO: maybe move this off of all requests
+    # TODO: maybe move this off of all requests?
 
     local_time_now = time.time()
     utc_offset = (datetime.fromtimestamp(

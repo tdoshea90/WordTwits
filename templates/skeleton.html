@@ -34,11 +34,26 @@
 
         <!-- Collapse everything in this div on small screens -->
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <!-- Search by ticker -->
             <form class="navbar-form navbar-left" role="search"
                     action="{{ url_for('get_ticker_from_search') }}" method=post>
                 <div class="row form-group" style="padding-left:10px;padding-right:10px;">
                     <div class="input-group">
-                        <input type="text" maxlength="5" class="form-control" name="ticker" placeholder="AMD" required>
+                        <input type="text" maxlength="5" class="form-control" name="ticker"
+                                placeholder="Search By Ticker" pattern="[A-Za-z0-9_.]{1,5}" id="ticker-search" required>
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Go</button>
+                      </span>
+                    </div>
+                </div>
+            </form>
+            <!-- Search by word -->
+            <form class="navbar-form navbar-left" role="search"
+                    action="{{ url_for('reverse_lookup_from_search') }}" method=post>
+                <div class="row form-group" style="padding-left:10px;padding-right:10px;">
+                    <div class="input-group">
+                        <input type="text" maxlength="64" class="form-control" name="word"
+                                placeholder="Search By Word" pattern="[A-Za-z]{2,64}" id="reverselookup-search" required>
                         <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">Go</button>
                       </span>
@@ -57,3 +72,15 @@
 
 </body>
 </html>
+
+<script type="text/javascript">
+var tickerSearchInput = document.getElementById("ticker-search")
+tickerSearchInput.oninvalid = function(event) {
+    event.target.setCustomValidity("Tickers are 1-5 characters long and can contain letters, numbers, and some even have periods or underscores.");
+}
+
+var reverselookupSearchInput = document.getElementById("reverselookup-search")
+reverselookupSearchInput.oninvalid = function(event) {
+    event.target.setCustomValidity("Search for a single word 2-64 characters long containing only letters.");
+}
+</script>
