@@ -71,11 +71,10 @@ def auth_redirect_uri():
 
 # TODO fix
 # comment this out while developing on localhost.
-#@app.before_request
+@app.before_request
 def check_session():
     if '/auth_redirect_uri/' != request.path:
         if 'user_id' not in session or 'access_token' not in session:
-            logging.error('Requesting auth code')
             auth_code_url = authwrapper.get_auth_code_url(request.url_root)
 
             logging.error('Redirecting to auth code url: %s' % auth_code_url)
