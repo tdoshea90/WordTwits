@@ -51,8 +51,7 @@ class AuthWrapper:
 
     @classmethod
     def __check_response_code(self, response_json):
-        if 'response' not in response_json:
-            logging.error('Response not response. :%s' % response_json)
+        if 'access_token' in response_json:
             return
 
         response_code = response_json['response']['status']
