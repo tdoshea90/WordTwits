@@ -19,8 +19,8 @@ stwrapper = StockTwitsWrapper()
 regexes = Regexify()
 regexes.compile_regex_patterns()
 
-ticker_regex = re.compile(r'[A-Za-z0-9_.]{1,5}')
-reverselookup_regex = re.compile(r'[A-Za-z]{2,64}')
+ticker_regex = re.compile(r'^[A-Za-z0-9_.]{1,5}$')
+reverselookup_regex = re.compile(r'^[A-Za-z]{2,64}$')
 
 
 @app.route('/')

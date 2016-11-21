@@ -26,14 +26,17 @@ class StockTwitsWrapper:
         request_url = self.__build_get_symbol_url(ticker)
         request_params = self.__build_get_symbol_params(oauth_token, '')
         response_json = self.__get_symbol(request_url, request_params)
+        all_messages = response_json['messages']
         st_compliant_posts = []
-        for message in response_json['messages']:
+        for message in all_messages:
             # https://stocktwits.com/developers/docs/display_requirement
             st_compliant_posts.append(self.__build_st_compliant_post(message))
 
         # TODO: thread the above and below, they are unrelated.
 
-        self.update_ticker(ticker, oauth_token)
+        # first message is the most recent
+        last_message = str(all_messages[0]['id'])
+        self.update_ticker(ticker, oauth_token, last_message)
 
         ticker_tuples = self.__query_ticker(ticker)
         result_set_list = []
@@ -48,10 +51,13 @@ class StockTwitsWrapper:
         return GetTickerResponse(ticker, response_json['symbol']['title'], st_compliant_posts, result_set_list)
 
     @classmethod
-    def update_ticker(self, ticker, oauth_token):
+    def update_ticker(self, ticker, oauth_token, last_message='-1'):
         """ update the ticker in the db """
 
         since_param = self.__get_pagination_param(ticker)
+        if since_param == last_message:
+            return
+
         request_url = self.__build_get_symbol_url(ticker)
         request_params = self.__build_get_symbol_params(oauth_token, since_param)
         response_json = self.__get_symbol(request_url, request_params)

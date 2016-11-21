@@ -86,8 +86,6 @@ function calculateWordVolume(wordList, screenVolume) {
 
 // Hyperlink everything that can be hyperlinked
 function linkEverything(post) {
-    // TODO: smarter regex to deal with puncation after @ and $ like $TSLA!?
-
     // Need to do this regex first
     var linkedLinks = post.replace(/(http|https):\/\/\S+/gi,
             function linkLink(linkToPumpArticle) {
@@ -95,13 +93,13 @@ function linkEverything(post) {
             return link + linkToPumpArticle + "</a>";
         });
 
-    var linkedCashtags = linkedLinks.replace(/\$[a-zA-Z_\.]+(?=\s|$)/g,
+    var linkedCashtags = linkedLinks.replace(/\$[a-zA-Z_\.]+(?=\W|$)/g,
         function linkCashTag(cashtag) {
             var link = "<a href='https://stocktwits.com/symbol/" + cashtag.substring(1, cashtag.length) + "'>";
             return link + cashtag + "</a>";
         });
 
-    var linkedAts = linkedCashtags.replace(/@[a-zA-z0-9_]{3,24}(?=\s|$)/g,
+    var linkedAts = linkedCashtags.replace(/@[a-zA-z0-9_]{3,24}(?=\W|$)/g,
             function linkAt(atUser) {
             var link = "<a href='https://stocktwits.com/" + atUser.substring(1, atUser.length) + "'>";
             return link + atUser + "</a>";
