@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 import os
 import re
 import time
@@ -64,7 +65,7 @@ def update_ticker(url_ticker):
         abort(404)
     ticker = url_ticker.upper().strip()
     # TODO: make a system account on ST and use for all automated calls.
-    # new app secret keys will kill session and create new token
+    # new app secret key or app deauth on ST will kill session and create new token
     tims_oauth_token = os.environ.get('ST_OAUTH_TOKEN')
     stwrapper.update_ticker(ticker, tims_oauth_token)
     return render_template('update_ticker.html', title=ticker)
@@ -83,6 +84,8 @@ def auth_redirect_uri():
     session['access_token'] = token_response.access_token
     session['user_id'] = token_response.user_id
     session['username'] = token_response.username
+
+    logging.error('Access token: %s' % session.get('access_token', '<empy>'))
 
     return redirect(request.url_root)   # go back home after successful auth
 
