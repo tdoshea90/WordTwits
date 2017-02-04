@@ -12,7 +12,8 @@ from lib.regexify import Regexify
 class StockTwitsWrapper:
     """ ST api wrapper. not all endpoints require auth token. """
 
-    mysql_conn = MysqlWrapper.get_connection()
+    mysql_conn_writer = MysqlWrapper.get_connection_writer()
+    mysql_conn_rr = MysqlWrapper.get_connection_rr()
     regexes = Regexify()
 
     bot_blacklist = [727510]
@@ -162,51 +163,56 @@ class StockTwitsWrapper:
 
     @classmethod
     def __get_last_message(self, ticker):
-        self.__check_connection()
-        with closing(self.mysql_conn.cursor()) as cursor:
+        self.__check_connection_rr()
+        with closing(self.mysql_conn_rr.cursor()) as cursor:
             result_args = cursor.callproc('get_last_message', (ticker, 0))
             last_message = result_args[1]
-            self.mysql_conn.commit()
+            self.mysql_conn_rr.commit()
             return last_message
 
     @classmethod
     def __query_ticker(self, ticker):
-        self.__check_connection()
-        with closing(self.mysql_conn.cursor()) as cursor:
+        self.__check_connection_rr()
+        with closing(self.mysql_conn_rr.cursor()) as cursor:
             cursor.callproc('query_ticker', (ticker,))
             query_result = next(cursor.stored_results()).fetchall()
-            self.mysql_conn.commit()
+            self.mysql_conn_rr.commit()
             return query_result
 
     @classmethod
     def __query_word(self, word):
-        self.__check_connection()
-        with closing(self.mysql_conn.cursor()) as cursor:
+        self.__check_connection_rr()
+        with closing(self.mysql_conn_rr.cursor()) as cursor:
             cursor.callproc('query_word', (word,))
             query_result = next(cursor.stored_results()).fetchall()
-            self.mysql_conn.commit()
+            self.mysql_conn_rr.commit()
             return query_result
 
     @classmethod
     def __update_word_frequencies(self, ticker, word_map):
-        self.__check_connection()
-        with closing(self.mysql_conn.cursor()) as cursor:
+        self.__check_connection_writer()
+        with closing(self.mysql_conn_writer.cursor()) as cursor:
             for word in word_map:
                 # TODO: benchmark this
                 cursor.callproc('update_word_frequencies', (ticker, word, 1))
-            self.mysql_conn.commit()
+            self.mysql_conn_writer.commit()
 
     @classmethod
     def __update_last_message(self, ticker, last_message):
-        self.__check_connection()
-        with closing(self.mysql_conn.cursor()) as cursor:
+        self.__check_connection_writer()
+        with closing(self.mysql_conn_writer.cursor()) as cursor:
             cursor.callproc('update_last_message', (ticker, last_message))
-            self.mysql_conn.commit()
+            self.mysql_conn_writer.commit()
 
     @classmethod
-    def __check_connection(self):
-        if not self.mysql_conn.is_connected():
-            self.mysql_conn = MysqlWrapper.get_connection()
+    def __check_connection_writer(self):
+        if not self.mysql_conn_writer.is_connected():
+            self.mysql_conn_writer = MysqlWrapper.get_connection_writer()
+
+    @classmethod
+    def __check_connection_rr(self):
+        if not self.mysql_conn_rr.is_connected():
+            self.mysql_conn_rrr = MysqlWrapper.get_connection_rr()
 
 
 class GetTickerResponse:
